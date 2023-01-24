@@ -1,13 +1,15 @@
-const tryCatch = async <T>(
-  callback: () => Promise<T>,
-  defaultValue?: T
-): Promise<T | undefined> => {
-  try {
-    return await callback();
-  } catch (error) {
-    console.log(error);
-    return defaultValue;
-  }
-};
+import type { Request, Response, NextFunction } from "express";
+
+type Middleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void>;
+
+const tryCatch =
+  (callback: Middleware) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    callback(req, res, next).catch((err) => next(err));
+  };
 
 export default tryCatch;
