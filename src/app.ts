@@ -1,9 +1,19 @@
-import * as dotenv from "dotenv";
-import config from "config";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
+import globalErrorHandler from "./controller/errorController";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import { AppError } from "./types";
 
-dotenv.config();
-
-const port: number = config.get("port");
 const app = express();
-app.listen(port, () => console.log(`listening port ${port}`));
+app.use(express.json());
+app.use("/users", userRoutes);
+
+app.use("/auth", authRoutes);
+
+app.use("*", (req: Request, res: Response, next: NextFunction) => {
+  next(new AppError(`找不到路徑${req.originalUrl}`, 404));
+});
+
+app.use(globalErrorHandler);
+
+export default app;
