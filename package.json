@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "gen": "plop"
   },
   "devDependencies": {
@@ -37,7 +37,6 @@
   "dependencies": {
     "@typegoose/typegoose": "^9.3.1",
     "argon2": "^0.28.3",
-    "config": "^3.3.6",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "express": "^5.0.0-alpha.8",
