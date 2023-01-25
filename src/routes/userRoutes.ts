@@ -1,5 +1,8 @@
 import express from "express";
-import { createUserHandler } from "../controller/userController";
+import {
+  createUserHandler,
+  verifyUserHandler,
+} from "../controller/userController";
 import { validateResource } from "../middleware";
 import { createUserSchema } from "../schema/userSchema";
 
@@ -9,5 +12,7 @@ const userRouter = express.Router();
 userRouter
   .route("/sign_up")
   .post(validateResource(createUserSchema), createUserHandler);
+
+userRouter.get("/verify/:id/:verificationCode", verifyUserHandler);
 
 export default userRouter;

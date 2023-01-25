@@ -11,7 +11,7 @@ import { nanoid } from "nanoid";
 3. <User> 泛型用於定義 this （本處指向 document）的型別
 */
 @pre<User>("save", async function () {
-  if (this.isModified("password")) return;
+  if (!this.isModified("password")) return;
 
   const hashPassword = await hash(this.password);
 
@@ -31,6 +31,7 @@ import { nanoid } from "nanoid";
 
 // model 結構
 export class User {
+  // unique 是否唯一，若有重複的資料則報 11000 錯誤
   @prop({ lowercase: true, required: true, unique: true })
   email: string;
 

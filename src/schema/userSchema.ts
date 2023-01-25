@@ -17,5 +17,6 @@ export const createUserSchema = z.object({
       path: ["passwordConfirm"],
     }),
 });
+// export const verifyUserSchema
 
 export type CreateUserInput = z.infer<typeof createUserSchema>["body"];
