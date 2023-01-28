@@ -1,15 +1,14 @@
-import { getModelForClass, pre, prop } from "@typegoose/typegoose";
+import { getModelForClass, index, pre, prop } from "@typegoose/typegoose";
 import { Severity } from "@typegoose/typegoose/lib/internal/constants";
 import { modelOptions } from "@typegoose/typegoose/lib/modelOptions";
 import { DocumentType } from "@typegoose/typegoose/lib/types";
 import { hash, verify } from "argon2";
 import { nanoid } from "nanoid";
 
-/* 
-1. 同 mongoose "pre" hooks
-2. 於用戶建立/修改 User document 的時間點介入，將密碼 hash 化後才存入 DB
-3. <User> 泛型用於定義 this （本處指向 document）的型別
-*/
+/* --- @pre --- */
+// 1. 同 mongoose "pre" hooks
+// 2. 於用戶建立/修改 User document 的時間點介入，將密碼 hash 化後才存入 DB
+// 3. <User> 泛型用於定義 this （本處指向 document）的型別
 @pre<User>("save", async function () {
   if (!this.isModified("password")) return;
 
@@ -18,7 +17,10 @@ import { nanoid } from "nanoid";
   // 將 hash 後的 password 放入 user document (this)
   this.password = hashPassword;
 })
-// model 設定項
+/* --- @index  --- */
+// 提升以 email 作為索引的查詢效能
+@index({ email: 1 })
+/* --- model 設定項 --- */
 @modelOptions({
   schemaOptions: {
     timestamps: true,
@@ -29,7 +31,7 @@ import { nanoid } from "nanoid";
   },
 })
 
-// model 結構
+/* --- model 結構 --- */
 export class User {
   // unique 是否唯一，若有重複的資料則報 11000 錯誤
   @prop({ lowercase: true, required: true, unique: true })

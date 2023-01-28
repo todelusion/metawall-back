@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 
 type Middleware = (
-  req: Request,
+  req: Request<any>,
   res: Response,
   next: NextFunction
 ) => Promise<void>;

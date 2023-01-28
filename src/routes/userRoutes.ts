@@ -1,18 +1,43 @@
 import express from "express";
 import {
   createUserHandler,
+  forgotPasswordHandler,
+  resetPasswordHandler,
   verifyUserHandler,
 } from "../controller/userController";
 import { validateResource } from "../middleware";
-import { createUserSchema } from "../schema/userSchema";
+import {
+  createUserSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  verifyUserSchema,
+} from "../schema/userSchema";
 
 const userRouter = express.Router();
 
-// 透過 validateResource 中間鍵，確保任何 req body 是我們預期的結構
-userRouter
-  .route("/sign_up")
-  .post(validateResource(createUserSchema), createUserHandler);
+// 透過 validateResource 中間鍵，確保任何 req body/params/query 是我們預期的結構
+userRouter.post(
+  "/sign_up",
+  validateResource(createUserSchema),
+  createUserHandler
+);
 
-userRouter.get("/verify/:id/:verificationCode", verifyUserHandler);
+userRouter.post(
+  "/verify/:id/:verificationCode",
+  validateResource(verifyUserSchema),
+  verifyUserHandler
+);
+
+userRouter.post(
+  "/forgotpassword",
+  validateResource(forgotPasswordSchema),
+  forgotPasswordHandler
+);
+
+userRouter.post(
+  "/resetpassword/:id/:passwordResetCode",
+  validateResource(resetPasswordSchema),
+  resetPasswordHandler
+);
 
 export default userRouter;

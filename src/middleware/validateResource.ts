@@ -17,7 +17,7 @@ const validateResource =
     } else {
       res.status(400).json({
         status: "failed",
-        message: result.error.formErrors.fieldErrors.body,
+        data: result.error.formErrors,
       });
     }
   };
