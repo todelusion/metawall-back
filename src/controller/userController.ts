@@ -45,28 +45,28 @@ export const createUserHandler = tryCatch(
   }
 );
 
-export const verifyUserHandler = tryCatch(
-  async (
-    req: Request<VerifyUserInput>,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    const { id, verificationCode } = req.params;
-    const user = await findByUser(id);
-    if (user === null) return next(new AppError("找不到指定用戶", 404));
-    if (user.verificationCode === verificationCode) {
-      user.verified = true;
-      await user.save();
-      res.status(200).json({
-        status: "success",
-        message: "用戶驗證成功",
-      });
-      return undefined;
-    }
+// export const verifyUserHandler = tryCatch(
+//   async (
+//     req: Request<VerifyUserInput>,
+//     res: Response,
+//     next: NextFunction
+//   ): Promise<void> => {
+//     const { id, verificationCode } = req.params;
+//     const user = await findByUser(id);
+//     if (user === null) return next(new AppError("找不到指定用戶", 404));
+//     if (user.verificationCode === verificationCode) {
+//       user.verified = true;
+//       await user.save();
+//       res.status(200).json({
+//         status: "success",
+//         message: "用戶驗證成功",
+//       });
+//       return undefined;
+//     }
 
-    return next(new AppError("驗證失敗", 401));
-  }
-);
+//     return next(new AppError("驗證失敗", 401));
+//   }
+// );
 
 export const forgotPasswordHandler = tryCatch(
   async (
@@ -77,7 +77,7 @@ export const forgotPasswordHandler = tryCatch(
     const { email } = req.body;
     const user = await findByEmail(email);
     if (user === null) return next(new AppError("此用戶尚未註冊", 404));
-    if (!user.verified) return next(new AppError("此用戶尚未點擊驗證信", 401));
+    // if (!user.verified) return next(new AppError("此用戶尚未點擊驗證信", 401));
 
     user.passwordResetCode = nanoid();
     await user.save();

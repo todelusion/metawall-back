@@ -3,14 +3,14 @@ import {
   createUserHandler,
   forgotPasswordHandler,
   resetPasswordHandler,
-  verifyUserHandler,
+  // verifyUserHandler,
 } from "../controller/userController";
 import { validateResource } from "../middleware";
 import {
   createUserSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
-  verifyUserSchema,
+  // verifyUserSchema,
 } from "../schema/userSchema";
 
 const userRouter = express.Router();
@@ -22,11 +22,11 @@ userRouter.post(
   createUserHandler
 );
 
-userRouter.post(
-  "/verify/:id/:verificationCode",
-  validateResource(verifyUserSchema),
-  verifyUserHandler
-);
+// userRouter.post(
+//   "/verify/:id/:verificationCode",
+//   validateResource(verifyUserSchema),
+//   verifyUserHandler
+// );
 
 userRouter.post(
   "/forgotpassword",

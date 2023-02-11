@@ -50,8 +50,8 @@ export class User {
   @prop()
   passwordResetCode: string | null;
 
-  @prop({ default: false })
-  verified: boolean;
+  // @prop({ default: false })
+  // verified: boolean;
 
   // methods
   async validatePassword(
