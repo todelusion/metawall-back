@@ -31,9 +31,7 @@ export const createUserHandler = tryCatch(
       });
       res.status(201).json({
         status: "success",
-        data: {
-          newUser,
-        },
+        message: "帳戶建立成功",
       });
     } catch (error) {
       if ((error as MongoServerError).code === 11000) {
@@ -118,6 +116,19 @@ export const resetPasswordHandler = tryCatch(
       status: "success",
       message: "密碼重設成功",
     });
+    return undefined;
+  }
+);
+
+export const getCurrentUserHandler = tryCatch(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: res.locals.user,
+      },
+    });
+
     return undefined;
   }
 );

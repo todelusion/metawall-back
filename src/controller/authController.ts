@@ -15,7 +15,6 @@ export const createSessionHandler = tryCatch(
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    console.log("in createSessionHandler");
     const { email, password } = req.body;
     const user = await findByEmail(email);
 
@@ -24,22 +23,20 @@ export const createSessionHandler = tryCatch(
 
     if (!isValid) return next(new AppError("密碼錯誤", 401));
 
-    // 註冊 access token
+    // 產生 access token
     const accessToken = signAccessToken(user);
 
-    // 註冊 refresh token
-    // const refreshToken = await signRefeshToken({ userId: user._id });
-    // console.log(accessToken, refreshToken);
+    // 產生 refresh token
+    const refreshToken = await signRefeshToken({ userId: user._id });
 
-    // res.status(200).json({
-    //   status: "success",
-    //   data: {
-    //     accessToken,
-    //     refreshToken,
-    //   },
-    // });
+    res.status(200).json({
+      status: "success",
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
 
-    res.send("test");
     return undefined;
   }
 );

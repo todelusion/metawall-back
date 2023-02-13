@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { DocumentType } from "@typegoose/typegoose";
+import { omit } from "lodash";
 import SessionModel from "../models/sessionModel";
-import { User } from "../models/userModel";
+import { privateFileds, User } from "../models/userModel";
 import { signJwt } from "../utils/jwt";
 
 export async function createSession({ userId }: { userId: string }) {
@@ -22,7 +23,7 @@ export async function signRefeshToken({ userId }: { userId: string }) {
 }
 
 export function signAccessToken(user: DocumentType<User>): string {
-  const payload = user.toJSON();
+  const payload = omit(user.toJSON(), privateFileds);
   const accessToken = signJwt(payload, "ACCESS_TOKEN_PRIVATE_KEY");
   return accessToken;
 }

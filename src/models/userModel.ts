@@ -5,6 +5,13 @@ import { DocumentType } from "@typegoose/typegoose/lib/types";
 import { hash, verify } from "argon2";
 import { nanoid } from "nanoid";
 
+export const privateFileds = [
+  "password",
+  "__v",
+  "verificationCode",
+  "passwordResetCode",
+];
+
 /* --- @pre --- */
 // 1. 同 mongoose "pre" hooks
 // 2. 於用戶建立/修改 User document 的時間點介入，將密碼 hash 化後才存入 DB
